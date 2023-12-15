@@ -65,52 +65,39 @@ public class ItemStackBuilder {
     public class ItemMetaBuilder {
         private ItemStackBuilder builder;
         private ItemMeta meta;
-        private Component displayName;
-        private List<ItemFlag> itemFlags;
-        private List<Component> lore;
 
 
         public ItemMetaBuilder(ItemStackBuilder builder) {
             this.builder = builder;
-            ItemMeta meta = builder.meta;
-
-
-
-            this.displayName = meta.displayName();
-            this.lore = meta.lore();
+            this.meta = builder.meta;
         }
 
         public ItemStackBuilder finish() {
-            this.meta.displayName(this.displayName);
-            this.meta.lore(this.lore);
-            this.meta.addItemFlags(this.itemFlags.toArray(new ItemFlag[0]));
-
             return this.builder.meta(this.meta);
         }
 
         public ItemMetaBuilder displayName(Component c) {
-            this.displayName = c;
+            this.meta.displayName(c);
             return this;
         }
 
         public ItemMetaBuilder clearLore() {
-            this.lore = new ArrayList<>();
+            this.meta.lore(new ArrayList<>());
             return this;
         }
 
         public ItemMetaBuilder lore(Component... lines) {
-            this.lore = List.of(lines);
+            this.meta.lore(List.of(lines));
             return this;
         }
 
         public ItemMetaBuilder clearFlags() {
-            this.meta.removeItemFlags(this.itemFlags.toArray(new ItemFlag[0]));
             this.meta.removeItemFlags(this.meta.getItemFlags().toArray(new ItemFlag[0]));
             return this;
         }
 
          public ItemMetaBuilder flags(ItemFlag... flags) {
-            this.itemFlags.addAll(List.of(flags));
+            this.meta.addItemFlags(flags);
             return this;
          }
 
